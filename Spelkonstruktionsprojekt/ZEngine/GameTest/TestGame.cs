@@ -16,6 +16,7 @@ using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
+using Spelkonstruktionsprojekt.Zenu;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
@@ -133,6 +134,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private void CreateTestEntities()
         {
             var cameraCageId = SetupCameraCage();
+            //var button = new Button("test");
+            // var button2 = new Button("test2");
+            var menutest = new Menu();
+            menutest.AddButton("test");
+            var count = menutest.buttons.Count;
+          //  foreach (butt in menutest.buttons) {
+                System.Console.Write(count);
+
+            //}
+
+
+
             InitPlayers(cameraCageId);
             //SetupBackground();
             SetupBackgroundTiles(5,5);

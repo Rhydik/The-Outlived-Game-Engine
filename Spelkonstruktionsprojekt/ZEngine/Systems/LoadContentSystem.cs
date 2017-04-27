@@ -11,6 +11,7 @@ using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.EventBus;
 using ZEngine.Wrappers;
+using Spelkonstruktionsprojekt.ZEngine.Components;
 
 namespace ZEngine.Systems
 {
@@ -29,6 +30,15 @@ namespace ZEngine.Systems
                 entity.Value.SpriteIsLoaded = true;
                 entity.Value.Width = entity.Value.Sprite.Width;
                 entity.Value.Height = entity.Value.Sprite.Height;
+            }
+
+            var fontEntities = ComponentManager.Instance
+                .GetEntitiesWithComponent<FontComponent>()
+                .Where(entity => !entity.Value.FontIsLoaded);
+            foreach (var entity in fontEntities)
+            {
+                entity.Value.font = contentManager.Load<SpriteFont>(entity.Value.fontName);
+                entity.Value.FontIsLoaded = true;
             }
 
             var soundEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(SoundComponent));

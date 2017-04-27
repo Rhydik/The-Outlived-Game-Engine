@@ -43,23 +43,19 @@ namespace Spelkonstruktionsprojekt.Zenu
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "dot"
+       
             };
-            var fontComponent = new FontComponent()
-            {
-               fontName = "Score"
-
-            };
- 
+            
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
 
             return entityId;
         }
 
-        //public void AddButton(string text, ButtonLink link)
-        //{
-        //    buttons.Add(new Button());
-        //}
+        public void AddButton(string text/*, ButtonLink link*/)
+        {
+            buttons.Add(new Button(text));
+        }
 
         //public void AddButton()
 
@@ -76,7 +72,7 @@ namespace Spelkonstruktionsprojekt.Zenu
     }
     public class Button
     {
-        public Button(string text, ButtonLink link)
+        public Button(string text/*, ButtonLink link*/)
         {
             var entityId = EntityManager.GetEntityManager().NewEntity();
             //var actionBindings = new ActionBindingsBuilder()
@@ -88,7 +84,7 @@ namespace Spelkonstruktionsprojekt.Zenu
             //    .SetAction(Keys.E, EventConstants.FireWeapon)
             //    .SetAction(Keys.LeftShift, EventConstants.Running)
             //    .Build();
-
+            
 
             var renderComponent = new RenderComponentBuilder()
                 .Position(500, 500, 20)
@@ -99,9 +95,15 @@ namespace Spelkonstruktionsprojekt.Zenu
             {
                 SpriteName = "dot"
             };
-
+            var fontComponent = new FontComponent()
+            {
+                fontName = "ZEone",
+                text = text
+            };
+            string buttontext = text;
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(fontComponent, entityId);
         }
     }
 }

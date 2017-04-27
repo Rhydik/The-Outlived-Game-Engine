@@ -29,12 +29,27 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             this._gameDependencies = gameDependencies;
 
             _gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
+            DrawMenu();
             DrawTitleSafe();
             _gameDependencies.SpriteBatch.End();
         }
-
-
-        // DrwaTitleSafe gets all the components and draws them in a
+        //DrawMenu
+        private void DrawMenu()
+        {
+            var graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
+            var fontComponents = ComponentManager.Instance.GetEntitiesWithComponent<FontComponent>();
+           //should have MenuComponent? and ButtonComponent?
+            foreach (var font in fontComponents) {
+                string text = font.Value.text;
+                
+                var xPosition = 500;
+                var yPosition = 500;
+                
+                var position = new Vector2(xPosition, yPosition);
+                _gameDependencies.SpriteBatch.DrawString(font.Value.font, text, position, Color.White);
+            }
+        }
+        // DrawTitleSafe gets all the components and draws them in a
         // correct format, so the data will sortet so that each entity will
         // have it's own row, and each component will be sorted by column.
         private void DrawTitleSafe()

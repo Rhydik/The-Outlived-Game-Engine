@@ -10,8 +10,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     class FontComponent : IComponent
     {
-        public String fontName;
+        public string fontName;
         public SpriteFont font;
+        public string text; 
         public bool FontIsLoaded { get; set; } = false;
     }
 }
