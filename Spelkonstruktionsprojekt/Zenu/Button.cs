@@ -35,18 +35,34 @@ namespace Spelkonstruktionsprojekt.Zenu
             //    .Build();
 
 
-            var renderComponent = new RenderComponentBuilder()
-                .Position(500, 500, 20)
-                .Dimensions(300, 60)
-                .Fixed(true)
-                .Build();
+            //var renderComponent = new RenderComponentBuilder()
+            //    .Position(500, 500, 20)
+            //    .Dimensions(300, 60)
+            //    .Fixed(true)
+            //    .Build();
+            var renderComponent = new RenderComponent()
+            {
+                Fixed = true
+
+            };
+            var positionComponent = new PositionComponent()
+            {
+                Position = new Vector2(500, 500)
+
+            };
+            var dimensionComponent = new DimensionsComponent()
+            {
+                Height = 60,
+                Width = 300
+            };
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "dot"
 
             };
-
+            ComponentManager.Instance.AddComponentToEntity(dimensionComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(positionComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
 
             return entityId;
@@ -86,21 +102,42 @@ namespace Spelkonstruktionsprojekt.Zenu
             //    .Build();
 
 
+            // var renderComponent = new RenderComponent()
+            //.Dimensions(300, 60)
+            //.Fixed(true)
+            //.Build();
             var renderComponent = new RenderComponent()
-                .Dimensions(300, 60)
-                .Fixed(true)
-                .Build();
+            {
+                Fixed = true
+
+            };
+            var positionComponent = new PositionComponent()
+            {
+                Position = new Vector2(500, 500)
+
+            };
+            var dimensionComponent = new DimensionsComponent()
+            {
+                Height = 60,
+                Width = 300
+            };
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "dot"
+
             };
+
             var fontComponent = new FontComponent()
             {
                 fontName = "ZEone",
                 text = text
             };
             string buttontext = text;
+
+
+            ComponentManager.Instance.AddComponentToEntity(dimensionComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(positionComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(fontComponent, entityId);
         }
