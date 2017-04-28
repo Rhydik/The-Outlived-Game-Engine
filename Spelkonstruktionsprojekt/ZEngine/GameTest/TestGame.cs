@@ -24,7 +24,7 @@ using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
 using ZEngine.Wrappers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
-
+using Spelkonstruktionsprojekt.Zenu;
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
     /// <summary>
@@ -91,7 +91,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void CreateTestEntities()
         {
-            // var button = new Button();
+            var button = new Button("test");
             var cameraCageId = SetupCameraCage();
             InitPlayers(cameraCageId);
             //SetupBackground();

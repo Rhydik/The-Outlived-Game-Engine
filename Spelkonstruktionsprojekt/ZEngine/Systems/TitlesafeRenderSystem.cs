@@ -37,12 +37,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private void DrawMenu()
         {
             var graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
-            var fontComponents = ComponentManager.Instance.GetEntitiesWithComponent<FontComponent>();
+            var fontComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(FontComponent));
             //should have MenuComponent? and ButtonComponent?
             foreach (var font in fontComponents)
             {
-                string text = font.Value.text;
-
+                string text = font.Value.font;
+                
                 var xPosition = 500;
                 var yPosition = 500;
 
