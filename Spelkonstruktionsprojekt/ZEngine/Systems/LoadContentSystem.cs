@@ -22,9 +22,7 @@ namespace ZEngine.Systems
             var entities = ComponentManager.Instance
                 .GetEntitiesWithComponent(typeof(SpriteComponent))
                 .Where(entity => !(entity.Value as SpriteComponent).SpriteIsLoaded);
-            var fontentities = ComponentManager.Instance
-              .GetEntitiesWithComponent(typeof(FontComponent))
-              .Where(entity => !(entity.Value as FontComponent).FontIsLoaded);
+
             foreach (var entity in entities)
             {
                 var spriteComponent = entity.Value as SpriteComponent;
@@ -34,8 +32,14 @@ namespace ZEngine.Systems
                 spriteComponent.Width = spriteComponent.Sprite.Width;
                 spriteComponent.Height = spriteComponent.Sprite.Height;
             }
-            foreach (var fonts in fontentities) {
+
+            var fontentities = ComponentManager.Instance
+            .GetEntitiesWithComponent(typeof(FontComponent))
+              .Where(entity => !(entity.Value as FontComponent).FontIsLoaded);
+            foreach (var fonts in fontentities)
+            {
                 var fontComponent = fonts.Value as FontComponent;
+                if (string.IsNullOrEmpty(fontComponent.fontName)) continue;
                 fontComponent = contentManager.Load<SpriteFont>(fontComponent.fontName);
                 fontComponent.FontIsLoaded = true;
 
