@@ -87,7 +87,6 @@ namespace Spelkonstruktionsprojekt.Zenu
 
 
             var renderComponent = new RenderComponent()
-                .Position(500, 500, 20)
                 .Dimensions(300, 60)
                 .Fixed(true)
                 .Build();
