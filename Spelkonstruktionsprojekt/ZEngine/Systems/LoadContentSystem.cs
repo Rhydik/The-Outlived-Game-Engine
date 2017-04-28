@@ -36,13 +36,12 @@ namespace ZEngine.Systems
             var fontentities = ComponentManager.Instance
             .GetEntitiesWithComponent(typeof(FontComponent))
               .Where(entity => !(entity.Value as FontComponent).FontIsLoaded);
-            foreach (var fonts in fontentities)
+            foreach (var entity in fontentities)
             {
-                var fontComponent = fonts.Value as FontComponent;
+                var fontComponent = entity.Value as FontComponent;
                 if (string.IsNullOrEmpty(fontComponent.fontName)) continue;
-                fontComponent = contentManager.Load<SpriteFont>(fontComponent.fontName);
+                fontComponent.font = contentManager.Load<SpriteFont>(fontComponent.fontName);
                 fontComponent.FontIsLoaded = true;
-
             }
 
             var soundEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(SoundComponent));

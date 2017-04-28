@@ -41,13 +41,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             //should have MenuComponent? and ButtonComponent?
             foreach (var font in fontComponents)
             {
-                string text = font.Value.font;
+                var fontComponent = font.Value as FontComponent;
+                string text = fontComponent.text;
                 
                 var xPosition = 500;
                 var yPosition = 500;
 
                 var position = new Vector2(xPosition, yPosition);
-                _gameDependencies.SpriteBatch.DrawString(font.Value.font, text, position, Color.White);
+                _gameDependencies.SpriteBatch.DrawString(fontComponent.font, text, position, Color.White);
             }
         }
         // DrwaTitleSafe gets all the components and draws them in a
