@@ -19,6 +19,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         private ComponentManager ComponentManager = ComponentManager.Instance;
         private Random Random = new Random();
+        private Vector2 closestPlayerPosition;
+        private float closestPlayerDistance;
 
         public void Update(GameTime gameTime)
         {
@@ -36,7 +38,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     aiMoveComponent.CurrentAcceleration = 0;
                     continue;
                 }
-
                 //Get closest players that
                 //    - Has position component
                 //    - Has flashlight component.
@@ -46,44 +47,59 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // that criteria, select clause selects the player properties that we need, and
                 // minby compares the distances and gives us the player with the smallest distance
                 // to the player.
-                var closestPlayer = playerEntities
-                    .Where(e =>
-                    {
-                        var hasPositionComponent =
-                            ComponentManager.Instance.EntityHasComponent<PositionComponent>(e.Key);
-                        if (!hasPositionComponent) return false;
-                        
-                       else return true;
-                    })
-                    .Select(e =>
-                    {
-                        var positionComponent =
-                            ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(e.Key);
-                        var distance = Vector2.Distance(positionComponent.Position, aiPosition);
+                //var closestPlayer = playerEntities
+                //    .Where(e =>
+                //    {
+                //        var hasPositionComponent =
+                //            ComponentManager.Instance.EntityHasComponent<PositionComponent>(e.Key);
+                //        if (!hasPositionComponent) return false;
 
-                        return new Tuple<float, PositionComponent>(
-                            distance,
-                            positionComponent
-                        );
-                    })
-                    .MinBy(e =>
-                    {
-                        // item1 is the distance
-                        var distance = e.Item1;
-                        return distance;
-                    });
+                //        else return true;
+                //    })
+                //    .Select(e =>
+                //    {
+                //        var positionComponent =
+                //            ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(e.Key);
+                //        var distance = Vector2.Distance(positionComponent.Position, aiPosition);
 
-                var closestPlayerDistance = closestPlayer.Item1;
-                var closestPlayerPosition = closestPlayer.Item2.Position;
-
+                //        return new Tuple<float, PositionComponent>(
+                //            distance,
+                //            positionComponent
+                //        );
+                //    })
+                //    .MinBy(e =>
+                //    {
+                //        // item1 is the distance
+                //        var distance = e.Item1;
+                //        return distance;
+                //    });
+                var testplayer = ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
                 foreach (var player in ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent)))
                 {
+                    if (ComponentManager.Instance.EntityHasComponent<PositionComponent>(player.Key))
+                    {
+
+                        var positionComponent =
+                            ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(player.Key);
+                        var distance = Vector2.Distance(positionComponent.Position, aiPosition);
+                        float olddistance = 999.9f;
+                        if (distance < olddistance)
+                        {
+                            closestPlayerDistance = distance;
+                            closestPlayerPosition = positionComponent.Position;
+
+                        }
+
+                        closestPlayerDistance = olddistance;
+                        closestPlayerPosition = positionComponent.Position;
+                        olddistance = distance;
+                    }
+
                     LightComponent light = ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(player.Key);
                     bool hasFlashlightOn = light.Light.Enabled;
                     if (!hasFlashlightOn)
                     {
-
-                        if (closestPlayer.Item2 != null && closestPlayerDistance < aiComponent.FollowDistance)
+                        if (closestPlayerPosition != null && closestPlayerDistance < aiComponent.FollowDistance)
                         {
                             aiComponent.Wander = false;
                             var dir = closestPlayerPosition - aiPosition;
@@ -102,7 +118,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                             BeginWander(entity.Key, gameTime.TotalGameTime.TotalMilliseconds);
                         }
                     }
-                    else {
+                    else
+                    {
 
                         aiComponent.Wander = false;
                         var dir = closestPlayerPosition - aiPosition;
@@ -139,7 +156,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             double start = moveComponent.Direction;
             double target = Random.NextDouble() * MathHelper.TwoPi % MathHelper.TwoPi;
 
-            generalAnimation.Animation = delegate(double currentTime)
+            generalAnimation.Animation = delegate (double currentTime)
             {
                 if (!aiComponent.Wander)
                 {
@@ -161,37 +178,37 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             };
         }
 
-//        public void InitTimer()
-//        {
-//            Random r = new Random();
-//            var rand = r.Next(2000, 4000);
-//
-//            Timer timer = new Timer();
-//            timer.Elapsed += new ElapsedEventHandler(Wandering);
-//            timer.Interval = rand;
-//            timer.Start();
-//        }
+        //        public void InitTimer()
+        //        {
+        //            Random r = new Random();
+        //            var rand = r.Next(2000, 4000);
+        //
+        //            Timer timer = new Timer();
+        //            timer.Elapsed += new ElapsedEventHandler(Wandering);
+        //            timer.Interval = rand;
+        //            timer.Start();
+        //        }
 
-//        public void Wandering(object sender, EventArgs e)
-//        {
-//            Random rnd = new Random();
-//
-//            var prevPos = aiMoveComponent.Direction;
-//
-//            float randX = (float) rnd.NextDouble();
-//            float randY = (float) rnd.NextDouble();
-//
-//            var newDirection = Math.Atan2(randX, randY);
-//
-//            if (newDirection < prevPos)
-//            {
-//                aiMoveComponent.RotationMomentum = 0.5;
-//            }
-//            else if (newDirection > prevPos) aiMoveComponent.RotationMomentum = -0.5;
-//
-//
-//            aiMoveComponent.Speed = 10f;
-//        }
+        //        public void Wandering(object sender, EventArgs e)
+        //        {
+        //            Random rnd = new Random();
+        //
+        //            var prevPos = aiMoveComponent.Direction;
+        //
+        //            float randX = (float) rnd.NextDouble();
+        //            float randY = (float) rnd.NextDouble();
+        //
+        //            var newDirection = Math.Atan2(randX, randY);
+        //
+        //            if (newDirection < prevPos)
+        //            {
+        //                aiMoveComponent.RotationMomentum = 0.5;
+        //            }
+        //            else if (newDirection > prevPos) aiMoveComponent.RotationMomentum = -0.5;
+        //
+        //
+        //            aiMoveComponent.Speed = 10f;
+        //        }
 
         private AnimationComponent GetOrCreateDefault(int entityId)
         {
